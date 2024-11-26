@@ -2,17 +2,38 @@
 let cart = JSON.parse(localStorage.getItem("cart")) || []; // Retrieve cart from localStorage or initialize as an empty array
 
 // Function to add items to the cart
-function addToCart(name, price) {
-    const existingItem = cart.find(item => item.name === name);
-    if (existingItem) {
-        existingItem.quantity += 1; // Increment quantity if already in the cart
-    } else {
-        cart.push({ name, price, quantity: 1 }); // Add new item
+<script>
+    function addToCart(productName, productPrice) {
+        // Create a product object
+        const product = {
+            name: productName,
+            price: productPrice,
+            quantity: 1
+        };
+
+        // Get the current cart from local storage or create a new one
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Check if the product is already in the cart
+        const existingProductIndex = cart.findIndex(item => item.name === product.name);
+        if (existingProductIndex > -1) {
+            // If the product exists, increase the quantity
+            cart[existingProductIndex].quantity += 1;
+        } else {
+            // If the product does not exist, add it to the cart
+            cart.push(product);
+        }
+
+        // Save the updated cart back to local storage
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Alert the user that the specific product has been added
+        alert(`${productName} has been added to your cart!`);
+
+        // Redirect to the checkout page
+        window.location.href = "checkout.html"; // Change this to your actual checkout page URL
     }
-    saveCart(); // Save updated cart to localStorage
-    alert(`${name} added to cart.`);
-    updateCartCount(); // Update the cart count displayed
-}
+</script>
 
 // Function to update cart item count display
 function updateCartCount() {
